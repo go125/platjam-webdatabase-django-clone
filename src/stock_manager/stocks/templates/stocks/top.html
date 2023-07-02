@@ -1,0 +1,68 @@
+{% extends "base.html" %} 
+{% block main %} 
+<div class="welcome">
+    <h1 class="title">
+        ようこそ在庫管理システムへ！
+    </h1>
+    <p class="subtitle">
+        JMOOC Bakery
+    </p>
+    <a class="btn btn-primary" href="{% url 'stock_new' %}">
+        新規材料種を登録する
+    </a>
+</div>
+{% if stocks %}
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                材料名
+            </th>
+            <th>
+                在庫数
+            </th>
+            <th>
+                管理者
+            </th>
+            <th>
+                入庫
+            </th>
+            <th>
+                出庫
+            </th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for stock in stocks %}
+        <tr>
+            <th>
+                <a href="{% url 'stock_detail' stock.id %}">
+                    {{ stock.name }}
+                </a>
+            </th>
+            <th>
+                {{ stock.stock_num }}
+            </th>
+            <th>
+                {{ stock.managed_by.username }}
+            </th>
+            <th>
+                <a href="{% url 'stock_in' stock.id %}">
+                    入庫
+                </a>
+            </th>
+            <th>
+                <a href="{% url 'stock_out' stock.id %}">
+                    出庫
+                </a>
+            </th>
+        </tr>
+        {% endfor %}
+    </tbody> 
+</table>
+{% else %} 
+<p>
+    材料はまだ登録されていません。
+</p>
+{% endif %}
+{% endblock %}
