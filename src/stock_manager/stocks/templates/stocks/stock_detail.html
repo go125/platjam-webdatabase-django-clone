@@ -1,8 +1,21 @@
 {% extends "base.html" %}
 {% block main %}
 <h2>{{ stock.name }}</h2>
-<a href="{% url 'stock_edit' stock.id %}">編集</a>
+<p><a href="{% url 'stock_edit' stock.id %}">編集(管理者のみ可能)</a></p>
+<p><a href="{% url 'stock_in' stock.id %}">入庫</a></p>
+<p><a href="{% url 'stock_out' stock.id %}">出庫</a></p>
 <p>内容量：{{ stock.amount }}</p>
+{% if stock.stock_type == 1 %}
+<p>種類：パン生地の材料</p>
+{% elif stock.stock_type == 2 %}
+<p>種類：ドライフルーツ</p>
+{% elif stock.stock_type == 3 %}
+<p>種類：調味料</p>
+{% else %}
+<p>種類：和菓子の材料</p>
+{% endif %}
 <p>在庫数：{{ stock.stock_num }}</p>
-<p>{{ stock.remarks }}</p>
+<p>管理者：{{ stock.managed_by.username }}</p>
+<p>管理者連絡先：{{ stock.managed_by.email }}</p>
+<p>備考：{{ stock.remarks }}</p>
 {% endblock %}

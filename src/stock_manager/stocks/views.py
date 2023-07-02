@@ -2,7 +2,7 @@ from django.contrib.auth.decorators import login_required
 from django.shortcuts import render, redirect, get_object_or_404
 from django.http import HttpResponse
 from stocks.models import Stock
-from stocks.forms import StockForm
+from stocks.forms import StockForm, StockInForm
 # Create your views here.
 def top(request):
     stocks = Stock.objects.all()
@@ -45,13 +45,17 @@ def stock_in(request, stock_id):
     # TODO 編集可能項目数を減らす
     stock=get_object_or_404(Stock, pk=stock_id)
     if request.method=='POST':
-        form = StockForm(request.POST, instance=stock)
+        form = StockInForm(request.POST)
         if form.is_valid():
-            form.save()
+            in_num = form.cleaned_data["in_num"]
+            stock_num_before = stock.stock_num
+            stock_num_after = stock_num_before + in_num
+            stock.stock_num = stock_num_after
+            stock.save()
             return redirect(stock_detail, stock_id=stock_id)
     else:
-        form=StockForm(instance=stock)
-    return render(request, "stocks/stock_in.html",{'form':form})
+        form=StockInForm()
+    return render(request, "stocks/stock_in.html",{'form':form, "stock":stock})
 
 @login_required
 def stock_out(request, stock_id):
