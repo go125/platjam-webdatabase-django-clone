@@ -2,7 +2,7 @@ from django.contrib.auth.decorators import login_required
 from django.shortcuts import render, redirect, get_object_or_404
 from django.http import HttpResponse
 from stocks.models import Stock
-from stocks.forms import StockForm, StockInForm
+from stocks.forms import StockForm, StockInForm, StockOutForm
 # Create your views here.
 def top(request):
     stocks = Stock.objects.all()
@@ -42,7 +42,6 @@ def stock_detail(request, stock_id):
 
 @login_required
 def stock_in(request, stock_id):
-    # TODO 編集可能項目数を減らす
     stock=get_object_or_404(Stock, pk=stock_id)
     if request.method=='POST':
         form = StockInForm(request.POST)
@@ -55,17 +54,21 @@ def stock_in(request, stock_id):
             return redirect(stock_detail, stock_id=stock_id)
     else:
         form=StockInForm()
-    return render(request, "stocks/stock_in.html",{'form':form, "stock":stock})
+    return render(request, "stocks/stock_in.html",{'form':form, 'stock':stock})
 
 @login_required
 def stock_out(request, stock_id):
-    # TODO 編集可能項目数を減らす
     stock=get_object_or_404(Stock, pk=stock_id)
+    stock_num_before = stock.stock_num
     if request.method=='POST':
-        form = StockForm(request.POST, instance=stock)
+        form = StockOutForm(request.POST)
         if form.is_valid():
-            form.save()
+            out_num = form.cleaned_data["out_num"]
+            stock_num_after = stock_num_before - out_num
+            stock.stock_num = stock_num_after
+            if stock.stock_num >= 0:
+                stock.save()
             return redirect(stock_detail, stock_id=stock_id)
     else:
-        form=StockForm(instance=stock)
-    return render(request, "stocks/stock_out.html",{'form':form})
+        form=StockOutForm()
+    return render(request, "stocks/stock_out.html",{'form':form, "stock":stock})
