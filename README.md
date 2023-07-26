@@ -71,3 +71,11 @@ python manage.py createsuperuser
 ```
 python manage.py startapp accounts
 ```
+
+#### ログイン画面のデザイン改善
+
+- [参考Webサイト1](https://ohitoriprogram.hatenablog.jp/entry/2020/10/28/200918)
+  - [BootStrap公式例](https://getbootstrap.jp/docs/4.3/examples/sign-in/)のソースをコピーする
+- [参考Webサイト2](https://gijutsu.com/2020/12/16/django-login/)
+- [参考Webサイト3](https://qiita.com/The-town/items/7579befe67efeee33486)
+  - Formに適切な属性を設定する必要がある
