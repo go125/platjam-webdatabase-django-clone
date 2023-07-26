@@ -1,5 +1,4 @@
 {% extends "base.html" %} 
-{% load django_bootstrap5 %} 
 {% block main %} 
 <h2>
     {{ stock.name }}の出庫
@@ -8,7 +7,7 @@
 <p>在庫数を超える出庫は無効となり、記録されません</p>
 <form method="post">
     {% csrf_token %}
-    {% bootstrap_form form %}
-    {% bootstrap_button button_type="submit" content="出庫" %}
+    {{ form }}
+    <button type="submit" class="btn btn-primary">登録</button>
 </form>
 {% endblock %}
