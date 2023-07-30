@@ -65,10 +65,14 @@ def stock_out(request, stock_id):
         if form.is_valid():
             out_num = form.cleaned_data["out_num"]
             stock_num_after = stock_num_before - out_num
-            stock.stock_num = stock_num_after
-            if stock.stock_num >= 0:
+            if stock_num_after >= 0:
+                stock.stock_num = stock_num_after
                 stock.save()
-            return redirect(stock_detail, stock_id=stock_id)
+                return redirect(stock_detail, stock_id=stock_id)
+            else:
+                e="在庫数を超す数の出庫はできません"
+                return render(request, "stocks/stock_out.html",{'form':form, "stock":stock, "error":e})
+
     else:
         form=StockOutForm()
     return render(request, "stocks/stock_out.html",{'form':form, "stock":stock})

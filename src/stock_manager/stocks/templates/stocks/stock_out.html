@@ -4,10 +4,14 @@
     {{ stock.name }}の出庫
 </h2>
 <p>{{ stock.stock_num }}個まで出庫できます</p>
-<p>在庫数を超える出庫は無効となり、記録されません</p>
 <form method="post">
     {% csrf_token %}
     {{ form }}
+    {% if error %}
+    <div class="alert alert-danger" role="alert">
+        <p>{{ error }}</p>
+    </div>
+    {% endif %}
     <button type="submit" class="btn btn-primary">登録</button>
 </form>
 {% endblock %}
