@@ -20,11 +20,22 @@
     max-height: 100%;
   }
 </style>
+<script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
 {% endblock %}
 {% block main %} 
 <h2>
     店舗マップ
 </h2>
+<h2>投稿設定</h2>
+<p>緯度：
+	<input type="text" name="lat" id="lat" value="" />
+</p>
+<p>経度：
+	<input type="text" name="lng" id="lng" value="" />
+</p>
+<p>説明：
+	<input type="text" name="name" id="name" value="" />
+</p>
 <div class="container"><div id="map"></div></div>
 <script>
 var map = L.map('map');
@@ -38,5 +49,31 @@ for (var i = 0; i < place.length; i++) {
 	iconMarkers.addLayer( L.marker([place[i].lat, place[i].lng]).addTo(map).bindPopup(place[i].name) );
 }
 map.fitBounds(iconMarkers.getBounds());	// 全マーカーを画面内に収める
+map.on('click', onMapClick);
+var clickMarker = null;
+function onMapClick(e) {
+	if (clickMarker) {
+		map.removeLayer(clickMarker);
+	}
+	var lat = e.latlng.lat;
+	$("#lat").val(lat);
+	var lng = e.latlng.lng;
+	$("#lng").val(lng);
+	// 地理院地図サーバから標高を求める
+	// http://maps.gsi.go.jp/development/elevation_s.html
+	var src = 'https://cyberjapandata2.gsi.go.jp/general/dem/scripts/getelevation.php?lon=' + lng + '&lat=' + lat;
+	fetch(src)
+	.then((response) => {
+		return response.text();
+	})
+	.then((text) => {
+		var results = JSON.parse(text);
+		var popStr = '緯度：' + lat + '<br>経度：' + lng + '<br>標高：' + results.elevation + 'm';
+		clickMarker = L.marker(e.latlng).on('click', onMarkerClick).addTo(map).bindPopup(popStr).openPopup();
+	})
+}
+function onMarkerClick(e) {
+	map.removeLayer(clickMarker);
+}
 </script>
 {% endblock %}
