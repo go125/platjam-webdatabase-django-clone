@@ -76,3 +76,6 @@ def stock_out(request, stock_id):
     else:
         form=StockOutForm()
     return render(request, "stocks/stock_out.html",{'form':form, "stock":stock})
+
+def shop_location(request):
+    return render(request, "stocks/shop_location.html")
