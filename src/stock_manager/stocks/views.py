@@ -3,6 +3,8 @@ from django.shortcuts import render, redirect, get_object_or_404
 from django.http import HttpResponse
 from stocks.models import Stock
 from stocks.forms import StockForm, StockInForm, StockOutForm
+import json
+
 # Create your views here.
 def top(request):
     stocks = Stock.objects.all()
@@ -78,4 +80,27 @@ def stock_out(request, stock_id):
     return render(request, "stocks/stock_out.html",{'form':form, "stock":stock})
 
 def shop_location(request):
-    return render(request, "stocks/shop_location.html")
+    data = [
+	{
+		'name': '東京タワー',
+		'lat': '35.6585753263022',
+		'lng': '139.7454324609718'
+	},{
+		'name': '増上寺',
+		'lat': '35.65737629074171',
+		'lng': '139.7482751425744'
+	},{
+		'name': '芝公園',
+		'lat': '35.65548717662271',
+		'lng': '139.74843437145282'
+	},{
+		'name': '赤羽橋駅',
+		'lat': '35.65496610534149',
+		'lng': '139.74394970889855'
+	},{
+		'name': '神谷町駅',
+		'lat': '35.66307981284523',
+		'lng': '139.7451975472575'
+	}
+    ]
+    return render(request, "stocks/shop_location.html",{'data_json': json.dumps(data)})
