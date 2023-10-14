@@ -19,3 +19,8 @@ class Stock(models.Model):
 
     def __str__(self):
         return self.name
+
+class Loc(models.Model):
+    name = models.CharField('name', max_length=32)
+    lat = models.CharField('lat', max_length=32)
+    lng = models.CharField('lng', max_length=32)
