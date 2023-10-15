@@ -1,8 +1,11 @@
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import render, redirect, get_object_or_404
 from django.http import HttpResponse
-from stocks.models import Stock
+from stocks.models import Stock, Loc
 from stocks.forms import StockForm, StockInForm, StockOutForm
+import json
+from django.core.serializers import serialize
+
 # Create your views here.
 def top(request):
     stocks = Stock.objects.all()
@@ -76,3 +79,9 @@ def stock_out(request, stock_id):
     else:
         form=StockOutForm()
     return render(request, "stocks/stock_out.html",{'form':form, "stock":stock})
+
+def shop_location(request): 
+    serialized_data = serialize("json", Loc.objects.all())
+    data = json.loads(serialized_data)
+    data = [item["fields"] for item in data]
+    return render(request, "stocks/shop_location.html",{'data_json': json.dumps(data)})
