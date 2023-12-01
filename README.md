@@ -1,9 +1,6 @@
 # platjam-webdatabase-django-clone
 - [講座Webサイト](https://platjam.jmooc.jp)
 - 本リポジトリではPlatJaMの授業「Webデータベースシステム入門」のコードをDjangoで書き直したものを保管しています
-  - PHP版でのドキュメントは以下の通りです
-  - [外部設計書](https://docs.google.com/presentation/d/1iXI5Wh7BnIAFAwzpXSSqgfPnVIFICN2Z/edit?usp=drive_link&ouid=105991748768245354266&rtpof=true&sd=true)
-  - [内部設計書](https://docs.google.com/presentation/d/10uTTGGIhT9qKuWa2ahSo_oySi9qL_y6_JUVGg6SMSfI/edit?usp=sharing)
 - [Docker環境構築Reference](https://qiita.com/jhorikawa_err/items/fb9c03c0982c29c5b6d5)
 
 ## 起動
